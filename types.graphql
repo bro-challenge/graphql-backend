@@ -1,0 +1,62 @@
+type User @model {
+  id: ID! @isUnique
+  name: String
+  participants: [Participant!]! @relation(name: "UserParticipants")
+  createdEvents: [Event!]! @relation(name: "EventOwner")
+}
+
+enum EventState {
+  WAITING
+  HAPPENING
+  CANCELLED
+  FINISHED
+}
+
+type Event @model {
+  id: ID! @isUnique
+  name: String!
+  location: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  createdBy: User! @relation(name: "EventOwner")
+  participants: [Participant!]! @relation(name: "EventParticipants")
+  drinks: [Drink!]! @relation(name: "EventDrinks")
+  password: String
+  state: EventState
+}
+
+type Sung @model {
+  id: ID! @isUnique
+  text: String
+  points: Int
+  participants: [Participant!]! @relation(name: "ParticipantSungs")
+}
+
+type Drink @model {
+  id: ID! @isUnique
+  name: String
+  imageUrl: String
+  drinkedByParticipants: [Participant!]! @relation(name: "ParticipanDrinks")
+  event: Event! @relation(name: "EventDrinks")
+  points: Int!
+}
+
+type Participant @model {
+  id: ID! @isUnique
+  user: User! @relation(name: "UserParticipants")
+  event: Event! @relation(name: "EventParticipants")
+  score: Int!
+  drinked: [Drink!]! @relation(name: "ParticipanDrinks")
+  currentCharacter: Character @relation(name: "ParticipantCharacter")
+  madeSungs: [Sung!]! @relation(name: "ParticipantSungs")
+}
+
+type Character @model {
+  id: ID! @isUnique
+  name: String
+  description: String
+  imageUrl: String
+  facebookProfileUrl: String
+  points: Int
+  participants: [Participant!]! @relation(name: "ParticipantCharacter")
+}

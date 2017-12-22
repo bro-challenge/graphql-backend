@@ -1,0 +1,4 @@
+targets:
+  prod: shared-eu-west-1/cjbi3txqv0reu0121coxa0nsa
+  default: prod
+  staging: shared-eu-west-1/cjbi3x0eb4c7a0176cmxjdgma
